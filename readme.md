@@ -1,2 +1,2 @@
 Budget Me
-Simple html - css - JS app that calculates youe expenses and incomes.
+Simple html - css - JS app that calculates your expenses and incomes.
