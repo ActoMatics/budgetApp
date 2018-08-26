@@ -70,7 +70,7 @@ let UIController = (function () {
                 // will be either income or expense
                 type: document.querySelector(DOMStrings.inputType).value,
                 description: document.querySelector(DOMStrings.inputDescription).value,
-                value: document.querySelector(DOMStrings.inputValue).value
+                value: parseFloat(document.querySelector(DOMStrings.inputValue).value)
             };
         },
 
@@ -137,6 +137,14 @@ let controller = (function (budgetCtrl, UICtrl) {
     };
 
 
+    let updateBudget = () => {
+        // calculate the budget 
+
+        // return budget
+
+        // display the budget on the UI
+    }
+
     let ctrlAddItem = () => {
         let input,
             newItem;
@@ -144,18 +152,25 @@ let controller = (function (budgetCtrl, UICtrl) {
         //  get the field input data
         input = UICtrl.getInput();
 
-        // add the item to the budget controller
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
 
-        // add the new item to the UI 
-        UICtrl.addListItem(newItem, input.type)
+            // add the item to the budget controller
+            newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-        // clear the fields
-        UICtrl.clearFields();
+            // add the new item to the UI 
+            UICtrl.addListItem(newItem, input.type)
 
-        // calculate the budget 
+            // clear the fields
+            UICtrl.clearFields();
 
-        // display the budget on the UI
+            // calculate and update budget
+            updateBudget();
+        } else {
+            alert('Can\'t insert empty value/less than 0 value')
+        }
+
+
+
     }
 
 
