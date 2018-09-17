@@ -78,21 +78,22 @@ let budgetController = (() => {
         deleteItem: (type, id) => {
             let ids,
                 index;
+
+            //Example  id = 6
+            //data.allItems[type][id];
+            // ids = [1 2 4  8]
+            //index = 3
+
             // returns the current id 
             ids = data.allItems[type].map(currentId => {
-                console.log(currentId.id, id);
                 return currentId.id
             });
             // locate the correct id's index
             index = ids.indexOf(id);
             // id the id exists we remove it from the data structure id 
 
-            console.log(index, id);
-            if (index !== -1) {
+            if (index !== -1)
                 data.allItems[type].splice(index, 1);
-                console.log('deletedd!', index);
-            }
-
         },
 
         calculateBudget: () => {
@@ -152,7 +153,32 @@ let UIController = (() => {
         container: '.container',
         expensesPercLabel: '.item__percentage',
         dateLabel: '.budget__title--month'
-    }
+    };
+
+
+    let formatNumber = (num, type) => {
+        /*
+        + or - before a number
+        2 decimal points for numbers
+        comma separating the thousands    
+        */
+        let numSplit, int, dec;
+
+        num = Math.abs(num);
+        num = num.toFixed(2);
+
+        numSplit = num.split('.');
+
+        int = numSplit[0];
+        dec = numSplit[1];
+
+        if (int.length > 3)
+            int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, int.length); // input 2310 output 2.310
+
+        dec = numSplit[1];
+
+        return (type === 'exp' ? sign = '-' : sign = '+') + ' ' + int + '.' + dec;
+    };
 
 
     return {
@@ -183,7 +209,7 @@ let UIController = (() => {
             // replace the placeholder text with the actual data
             newHtml = html.replace('%id%', obj.id);
             newHtml = newHtml.replace('%description%', obj.description);
-            newHtml = newHtml.replace('%value%', obj.value);
+            newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
 
             //insert HTML into the DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
@@ -328,6 +354,7 @@ let controller = ((budgetCtrl, UICtrl) => {
          * we can use the parent node all the way up to the top of the required node by chaining it.
          * It can be used to fetch different elements such as the elements id =  console.log(event.target.parentNode.parentNode.parentNode.parentNode.id);
          */
+
         let itemId,
             splitId,
             type,
@@ -340,7 +367,7 @@ let controller = ((budgetCtrl, UICtrl) => {
         if (itemId) {
             splitId = itemId.split('-');
             type = splitId[0];
-            ID = splitId[1];
+            id = praseInt(splitId[1]);
 
             // delete the item from the data structure
             budgetCtrl.deleteItem(type, id);
