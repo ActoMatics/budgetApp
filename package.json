@@ -1,0 +1,19 @@
+{
+  "name": "budgetappjs",
+  "version": "1.0.0",
+  "description": "Budget Me\r Simple html - css - JS app that calculates your expenses and incomes.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ActoMatics/budgetApp.git"
+  },
+  "author": "Sarit Vakrat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ActoMatics/budgetApp/issues"
+  },
+  "homepage": "https://github.com/ActoMatics/budgetApp#readme"
+}
