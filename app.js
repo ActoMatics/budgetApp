@@ -180,6 +180,12 @@ let UIController = (() => {
         return (type === 'exp' ? sign = '-' : sign = '+') + ' ' + int + '.' + dec;
     };
 
+    // forLoop for nodesLists
+    let nodeListForEach = (list, callback) => {
+        for (let i = 0; i < list.length; i++) {
+            callback(list[i], i)
+        };
+    }
 
     return {
         getInput: () => {
@@ -240,9 +246,13 @@ let UIController = (() => {
         },
 
         displayBudget: (obj) => {
-            document.querySelector(DOMStrings.budgetLabel).textContent = obj.budget;
-            document.querySelector(DOMStrings.incomeLabel).textContent = obj.totalInc;
-            document.querySelector(DOMStrings.expensesLabel).textContent = obj.totalExp;
+            let type;
+
+            obj.budget > 0 ? type = 'inc' : 'exp';
+
+            document.querySelector(DOMStrings.budgetLabel).textContent = formatNumber(obj.budget, type);
+            document.querySelector(DOMStrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+            document.querySelector(DOMStrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
 
             if (obj.percentage > 0)
                 document.querySelector(DOMStrings.percentageLabel).textContent = obj.percentage + '%';
@@ -251,24 +261,42 @@ let UIController = (() => {
         },
 
         displayPercentages: (percentages) => {
-            let fields;
-
-            fields = document.querySelectorAll(DOMStrings.expensesPercLabel);
-
-            // forLoop for nodesLists
-            let nodeListForEach = (list, callback) => {
-                for (let i = 0; i < list.length; i++) {
-                    callback(list[i], i)
-                };
-            }
+            let fields = document.querySelectorAll(DOMStrings.expensesPercLabel);
 
             nodeListForEach(fields, (curr, index) => {
                 if (percentages[index] > 0)
                     curr.textContent = percentages[index] + '%';
                 else
                     curr.textContent = '---';
-
             });
+
+        },
+
+        displayDate: () => {
+            let now, year, month, months;
+
+            now = new Date();
+
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+            month = now.getMonth();
+
+            year = now.getFullYear();
+
+            document.querySelector(DOMStrings.dateLabel).textContent = months[month] + ' ' + year;
+        },
+
+        changedType: () => {
+            let fields = document.querySelectorAll(
+                DOMStrings.inputType + ',' +
+                DOMStrings.inputDescription + ',' +
+                DOMStrings.inputValue
+            );
+
+            nodeListForEach(fields, (curr) => {
+                curr.classList.toggle('red-focus');
+            });
+
+            document.querySelector(DOMStrings.inputBtn).classList.toggle('red');
 
         },
 
@@ -294,7 +322,10 @@ let controller = ((budgetCtrl, UICtrl) => {
         });
 
         // set event handler for removing items - also called - event delegation. to let the events bubble up to all the containers.
-        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem)
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+
+        // change colors for each type
+        document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
     };
 
 
@@ -387,6 +418,7 @@ let controller = ((budgetCtrl, UICtrl) => {
     return {
         init: () => {
             // display the budget on the UI
+            UICtrl.displayDate();
             UICtrl.displayBudget({
                 budget: 0,
                 totalInc: 0,
