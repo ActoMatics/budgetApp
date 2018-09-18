@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/ActoMatics/budgetApp.git"
   },
+  "engines": {
+    "node": "8.11.3"
+  },
   "author": "Sarit Vakrat",
   "license": "ISC",
   "bugs": {
@@ -42,8 +45,5 @@
   "dependencies": {
     "browser-sync": "^2.23.6",
     "express": "^4.16.3"
-  },
-  "engines": {
-    "node": "8.11.3"
-  },
+  }
 }
