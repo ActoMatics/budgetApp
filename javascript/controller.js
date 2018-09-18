@@ -4,8 +4,7 @@ import BudgetCtrl from 'BudgetController'
 
 export default (() => {
 
-    const setupEventListeners = function () {
-
+    const setupEventListeners = () => {
         const DOM = UICtrl.getDomStrings();
 
         UICtrl.displayBudget({
@@ -17,6 +16,12 @@ export default (() => {
 
         $(DOM.inputButton).on('click', ctrlAddItem);
 
+        document.addEventListener('keypress', (event) => {
+            if (event.keyCode === 13 || event.which === 13) {
+                ctrlAddItem();
+            }
+        });
+
         $(DOM.container).on('click', ctrlDeleteItem);
 
         $(DOM.inputType).on('change', UICtrl.changedType);
@@ -24,7 +29,7 @@ export default (() => {
         UICtrl.displayMonth();
     };
 
-    const updateBudget = function () {
+    const updateBudget = () => {
 
         BudgetCtrl.calculateBudget();
 
@@ -34,7 +39,7 @@ export default (() => {
 
     };
 
-    const updatePercentages = function () {
+    const updatePercentages = () => {
 
         BudgetCtrl.calculatePercentages();
 
@@ -44,8 +49,7 @@ export default (() => {
 
     };
 
-    const ctrlAddItem = function()  {
-
+    const ctrlAddItem = () => {
         const input = UICtrl.getInput();
 
         if (input.description !== '' && input.value > 0) {
@@ -65,11 +69,10 @@ export default (() => {
 
     };
 
-    const ctrlDeleteItem = function (event) {
-
+    const ctrlDeleteItem = (event) => {
         let itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-        if(itemID) {
+        if (itemID) {
             let splitID = itemID.split('-');
             let type = splitID[0];
             let ID = parseInt(splitID[1]);

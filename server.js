@@ -1,11 +1,11 @@
-const express = require('express');
-const path = require('path');
-const app = express();
+const express = require('express'),
+    path = require('path'),
+    app = express();
 
 if (process.env.NODE_ENV !== 'production') {
-    const webpackMiddleware = require("webpack-dev-middleware");
-    const webpack = require('webpack');
-    const webpackConfig = require('./webpack.config');
+    const webpackMiddleware = require("webpack-dev-middleware"),
+        webpack = require('webpack'),
+        webpackConfig = require('./webpack.config');
 
     app.use(webpackMiddleware(webpack(webpackConfig)));
 } else {
@@ -15,4 +15,4 @@ if (process.env.NODE_ENV !== 'production') {
     })
 }
 
-app.listen(process.env.PORT || 3050, () => console.log('Listening'));
+app.listen(process.env.PORT || 3050, () => console.log(`Listening to to port ${PORT}`));

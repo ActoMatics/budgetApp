@@ -19,7 +19,7 @@ export default (() => {
     };
 
 
-    const formatNumber = function (num, type)  {
+    const formatNumber = (num, type) => {
         /*
         + or - before a number
         2 decimal points for numbers
@@ -35,18 +35,16 @@ export default (() => {
         int = numSplit[0];
         dec = numSplit[1];
 
-        if (int.length > 3) {
+        if (int.length > 3)
             int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
-        }
 
         dec = numSplit[1];
 
         return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
-
     };
 
 
-   // forLoop for nodesLists
+    // forLoop for nodesLists
     let nodeListForEach = (list, callback) => {
         for (let i = 0; i < list.length; i++) {
             callback(list[i], i)
@@ -55,7 +53,7 @@ export default (() => {
 
 
     return {
-        getInput: () =>  {
+        getInput: () => {
             return {
                 description: $(DOMstrings.inputDescription).val(),
                 value: parseFloat($(DOMstrings.inputValue).val()),
@@ -63,8 +61,8 @@ export default (() => {
             }
         },
 
-        
-        addListItem:  (obj, type) => {
+
+        addListItem: (obj, type) => {
             let html, newHtml, element;
 
             // create HTML string with placeholder text
@@ -80,32 +78,33 @@ export default (() => {
             newHtml = html.replace('%id%', obj.id);
             newHtml = newHtml.replace('%description%', obj.description);
             newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
-            
+
             //insert HTML into the DOM
             // document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
-
             $(element).append(newHtml);
         },
 
-        
+
         deleteListItem: (selectorId) => {
             // you can't simply delete an element in HTML, you have to move up to remove the child,you can only delete a child
             let el = document.getElementById(selectorId);
             el.parentNode.removeChild(el);
         },
 
-        clearFields:  () => {
+
+        clearFields: () => {
             let fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
             let fieldsArr = Array.prototype.slice.call(fields);
 
-            fieldsArr.forEach( (current) => {
+            fieldsArr.forEach((current) => {
                 current.value = '';
             });
 
             fieldsArr[0].focus();
         },
 
-        displayBudget: function (obj) {
+
+        displayBudget: (obj) => {
             let type;
             obj.budget > 0 ? type = 'inc' : type = 'exp';
 
@@ -113,46 +112,47 @@ export default (() => {
             document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
             document.querySelector(DOMstrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
 
-            if (obj.percentage > 0) {
+            if (obj.percentage > 0)
                 document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
-            } else {
+            else
                 document.querySelector(DOMstrings.percentageLabel).textContent = '---';
-            }
+
         },
 
-        displayPercentages: function (percentages) {
+
+        displayPercentages: (percentages) => {
             const fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
 
-            nodeListForEach(fields, function (current, index) {
+            nodeListForEach(fields, (current, index) => {
 
-                if (percentages[index] > 0) {
+                if (percentages[index] > 0)
                     current.textContent = percentages[index] + '%';
-                } else {
+                else
                     current.textContent = '---';
-                }
             });
         },
 
-        displayMonth: function () {
-            let now = new Date();
-            let year = now.getFullYear();
-            let month = now.getMonth();
 
-            let months = ['January', 'February', 'March', 'April', 'May', 'June', 'June', 'August', 'September', 'October', 'Novemberf', 'Deceber'];
+        displayMonth: () => {
+            let now = new Date(),
+                year = now.getFullYear(),
+                month = now.getMonth();
+
+            let months = ['January', 'February', 'March', 'April', 'May', 'June', 'June', 'August', 'September', 'October', 'November', 'December'];
 
             document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year;
         },
 
-        changedType: function () {
+        changedType: () => {
             let fields = $(DOMstrings.inputType + ',' + DOMstrings.inputDescription + ',' + DOMstrings.inputValue);
-            nodeListForEach(fields, function (cur) {
+            nodeListForEach(fields, (cur) => {
                 cur.classList.toggle('red-focus');
             });
 
             document.querySelector(DOMstrings.inputButton).classList.toggle('red');
         },
 
-        getDomStrings: function () {
+        getDomStrings: () => {
             return DOMstrings
         }
     };
